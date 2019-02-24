@@ -5,10 +5,10 @@
 This version is modified by Andrew Fleenor, on 2 October 2010, to temporarily
 fix the bug where a body is parsed for a request that shouldn't have a body."""
 
-import cStringIO
+import io
 import dpkt
 import logging
-import settings
+from . import settings
 
 def parse_headers(f):
     """Return dict of HTTP headers parsed from a file object."""
@@ -116,9 +116,8 @@ def parse_message(message, f):
     # Save the rest
     message.data = f.read()
 
-class Message(dpkt.Packet):
+class Message(dpkt.Packet, metaclass=type):
     """Hypertext Transfer Protocol headers + body."""
-    __metaclass__ = type
     __hdr_defaults__ = {}
     headers = None
     body = None
@@ -129,17 +128,17 @@ class Message(dpkt.Packet):
         else:
             self.headers = {}
             self.body = ''
-            for k, v in self.__hdr_defaults__.iteritems():
+            for k, v in self.__hdr_defaults__.items():
                 setattr(self, k, v)
-            for k, v in kwargs.iteritems():
+            for k, v in kwargs.items():
                 setattr(self, k, v)
 
     def unpack(self, buf):
-        f = cStringIO.StringIO(buf)
+        f = io.StringIO(buf)
         parse_message(self, f)
 
     def pack_hdr(self):
-        return ''.join([ '%s: %s\r\n' % t for t in self.headers.iteritems() ])
+        return ''.join([ '%s: %s\r\n' % t for t in self.headers.items() ])
 
     def __len__(self):
         return len(str(self))
@@ -170,7 +169,7 @@ class Request(Message):
     __proto = 'HTTP'
 
     def unpack(self, buf):
-        f = cStringIO.StringIO(buf)
+        f = io.StringIO(buf)
         line = f.readline()
         l = line.strip().split()
         if len(l) != 3 or l[0] not in self.__methods or \
@@ -195,7 +194,7 @@ class Response(Message):
     __proto = 'HTTP'
 
     def unpack(self, buf):
-        f = cStringIO.StringIO(buf)
+        f = io.StringIO(buf)
         line = f.readline()
         l = line.strip().split(None, 2)
         if len(l) < 3 or not l[0].startswith(self.__proto) or not l[1].isdigit():

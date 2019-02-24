@@ -1,6 +1,6 @@
 import gzip
 import zlib
-import cStringIO
+import io
 from base64 import encodestring as b64encode
 import logging
 
@@ -8,8 +8,8 @@ from .. import dpkt_http_replacement as dpkt_http
 from ..mediatype import MediaType
 from .. import settings
 
-import common as http
-import message
+from . import common as http
+from . import message
 
 # try to import UnicodeDammit from BeautifulSoup,
 # starting with system and defaulting to included version
@@ -85,7 +85,7 @@ class Response(message.Message):
             if encoding == 'gzip' or encoding == 'x-gzip':
                 try:
                     gzipfile = gzip.GzipFile(
-                        fileobj = cStringIO.StringIO(self.raw_body)
+                        fileobj = io.StringIO(self.raw_body)
                     )
                     self.body = gzipfile.read()
                 except zlib.error:
@@ -154,8 +154,8 @@ class Response(message.Message):
                     # right thing.
                     dammit = UnicodeDammit(self.body, override_encodings)
                     # if unicode was found
-                    if dammit.unicode:
-                        self.text = dammit.unicode
+                    if dammit.str:
+                        self.text = dammit.str
                         self.originalEncoding = dammit.originalEncoding
                     else:
                         # unicode could not be decoded, at all

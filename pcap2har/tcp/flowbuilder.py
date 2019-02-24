@@ -1,4 +1,4 @@
-import flow as tcp
+from . import flow as tcp
 import logging
 
 
@@ -75,7 +75,7 @@ class FlowBuilder(object):
         '''
         Generator that iterates over all flows.
         '''
-        for flowlist in self.flowdict.itervalues():
+        for flowlist in self.flowdict.values():
             for flow in flowlist:
                 yield flow
 

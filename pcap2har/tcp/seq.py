@@ -52,8 +52,8 @@ import unittest
 
 class TestTcpSeqSubtraction(unittest.TestCase):
     def testNormalSubtraction(self):
-        self.assertEqual(subtract(500L, 1L), 499L)
-        self.assertEqual(subtract(1L, 1L), 0L)
+        self.assertEqual(subtract(500, 1), 499)
+        self.assertEqual(subtract(1, 1), 0)
         self.assertEqual(subtract(0x10000000, 0x20000000), -0x10000000)
         #self.assertEqual(subtract(20L, 0x
     def testWrappedSubtraction(self):

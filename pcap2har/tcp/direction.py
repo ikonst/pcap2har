@@ -3,8 +3,8 @@ import logging
 
 from ..sortedcollection import SortedCollection
 
-import packet
-import chunk as tcp
+from . import packet
+from . import chunk as tcp
 from .. import settings
 
 

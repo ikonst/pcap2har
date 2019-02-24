@@ -195,35 +195,35 @@ class SortedCollection(object):
 
 if __name__ == '__main__':
     sd = SortedCollection('The quick Brown Fox jumped'.split(), key=str.lower)
-    print(sd._keys)
-    print(sd._items)
-    print(sd._key)
-    print(repr(sd))
-    print(sd.key)
+    print((sd._keys))
+    print((sd._items))
+    print((sd._key))
+    print((repr(sd)))
+    print((sd.key))
     sd.key = str.upper
-    print(sd.key)
-    print(len(sd))
-    print(list(sd))
-    print(list(reversed(sd)))
+    print((sd.key))
+    print((len(sd)))
+    print((list(sd)))
+    print((list(reversed(sd))))
     for item in sd:
         assert item in sd
     for i, item in enumerate(sd):
         assert item == sd[i]
     sd.insert('jUmPeD')
     sd.insert_right('QuIcK')
-    print(sd._keys)
-    print(sd._items)
-    print(sd.find_le('JUMPED'), 'jUmPeD')
-    print(sd.find_ge('JUMPED'), 'jumped')
-    print(sd.find_le('GOAT'), 'Fox')
-    print(sd.find_ge('GOAT'), 'jUmPeD')
-    print(sd.find('FOX'))
-    print(sd[3])
-    print(sd[3:5])
-    print(sd[-2])
-    print(sd[-4:-2])
+    print((sd._keys))
+    print((sd._items))
+    print((sd.find_le('JUMPED'), 'jUmPeD'))
+    print((sd.find_ge('JUMPED'), 'jumped'))
+    print((sd.find_le('GOAT'), 'Fox'))
+    print((sd.find_ge('GOAT'), 'jUmPeD'))
+    print((sd.find('FOX')))
+    print((sd[3]))
+    print((sd[3:5]))
+    print((sd[-2]))
+    print((sd[-4:-2]))
     for i, item in enumerate(sd):
-        print(sd.index(item), i)
+        print((sd.index(item), i))
     try:
         sd.index('xyzpdq')
     except ValueError:
@@ -233,4 +233,4 @@ if __name__ == '__main__':
 
 
     import doctest
-    print(doctest.testmod())
+    print((doctest.testmod()))

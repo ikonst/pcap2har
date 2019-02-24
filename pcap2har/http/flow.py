@@ -1,9 +1,9 @@
 import logging
 import dpkt
 
-import common as http
-from request import Request
-from response import Response
+from . import common as http
+from .request import Request
+from .response import Response
 from .. import settings
 
 
@@ -140,7 +140,7 @@ def parse_streams(request_stream, response_stream):
         requests = gather_messages(Request, request_stream)
         responses = gather_messages(Response, response_stream)
     except dpkt.UnpackError as e:
-        print 'failed to parse http: ', e
+        print('failed to parse http: ', e)
         return False, None, None
     else:
         return True, requests, responses

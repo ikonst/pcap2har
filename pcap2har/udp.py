@@ -1,6 +1,6 @@
 import logging
 import dpkt
-import dns
+from . import dns
 
 
 class Processor(object):

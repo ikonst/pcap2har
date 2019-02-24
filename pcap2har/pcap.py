@@ -2,8 +2,8 @@ import logging
 
 import dpkt
 
-from pcaputil import *
-from packetdispatcher import PacketDispatcher
+from .pcaputil import *
+from .packetdispatcher import PacketDispatcher
 
 
 def ParsePcap(dispatcher, filename=None, reader=None):

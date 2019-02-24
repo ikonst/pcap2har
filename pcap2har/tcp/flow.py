@@ -1,11 +1,11 @@
 import logging
-import common as tcp
+from . import common as tcp
 
 from dpkt.tcp import TH_SYN
 
 from ..sortedcollection import SortedCollection
-import seq # hopefully no name collisions
-from direction import Direction
+from . import seq # hopefully no name collisions
+from .direction import Direction
 
 
 class NewFlowError(Exception):
@@ -49,7 +49,7 @@ class Flow(object):
         # the correct position for pkt is found by looping i from
         # len(self.packets) descending back to 0 (inclusive);
         # normally, this loop will only run for one iteration.
-        for i in xrange(len(self.packets), -1, -1):
+        for i in range(len(self.packets), -1, -1):
             # pkt is at the correct position if it is at the
             # beginning, or if it is >= the packet at its previous
             # position.

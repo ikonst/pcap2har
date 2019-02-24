@@ -7,10 +7,11 @@ from datetime import datetime
 import dpkt
 import logging
 
-from pcaputil import ms_from_dpkt_time, ms_from_dpkt_time_diff
-from pagetracker import PageTracker
-import http
-import settings
+from .pcaputil import ms_from_dpkt_time, ms_from_dpkt_time_diff
+from .pagetracker import PageTracker
+from . import http
+from . import settings
+from functools import reduce
 
 
 class Entry(object):
@@ -121,10 +122,10 @@ class UserAgentTracker(object):
         if not len(self.data):
             return None
         elif len(self.data) == 1:
-            return self.data.keys()[0]
+            return list(self.data.keys())[0]
         else:
             # return the string from the key-value pair with the biggest value
-            return max(self.data.iteritems(), key=lambda v: v[1])[0]
+            return max(iter(self.data.items()), key=lambda v: v[1])[0]
 
 
 class HttpSession(object):

@@ -30,7 +30,7 @@ def friendly_tcp_flags(flags):
         dpkt.tcp.TH_CWR: 'CWR'
     }
     #make a list of the flags that are activated
-    active_flags = filter(lambda t: t[0] & flags, d.iteritems())
+    active_flags = [t for t in iter(d.items()) if t[0] & flags]
     #join all their string representations with '|'
     return '|'.join(t[1] for t in active_flags)
 
@@ -53,7 +53,7 @@ def friendly_data(data):
     '''
     convert (possibly binary) data into a form readable by people on terminals
     '''
-    return `data`
+    return repr(data)
 
 
 def ms_from_timedelta(td):
@@ -117,7 +117,7 @@ class ModifiedReader(object):
             self.__fh = dpkt.pcap.LEFileHdr(buf)
             self.__ph = dpkt.pcap.LEPktHdr
         elif self.__fh.magic != dpkt.pcap.TCPDUMP_MAGIC:
-            raise ValueError, 'invalid tcpdump header'
+            raise ValueError('invalid tcpdump header')
         self.snaplen = self.__fh.snaplen
         self.dloff = dpkt.pcap.dltoff[self.__fh.linktype]
         self.filter = ''
@@ -137,7 +137,7 @@ class ModifiedReader(object):
     def dispatch(self, cnt, callback, *args):
         if cnt > 0:
             for i in range(cnt):
-                ts, pkt = self.next()
+                ts, pkt = next(self)
                 callback(ts, pkt, *args)
         else:
             for ts, pkt in self:
@@ -182,4 +182,4 @@ def print_rusage():
     rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     if sys.platform == 'darwin':
         rss /= 1024  # Mac OSX returns rss in bytes, not KiB
-    print 'max_rss:', rss, 'KiB'
+    print('max_rss:', rss, 'KiB')

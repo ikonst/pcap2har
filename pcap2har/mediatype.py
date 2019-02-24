@@ -63,7 +63,7 @@ class MediaType(object):
 
     def __str__(self):
         result = self.mimeType()
-        for n, v in self.params.iteritems():
+        for n, v in self.params.items():
             result += '; %s=%s' % (n, v)
         return result
 
@@ -74,8 +74,8 @@ class MediaType(object):
 # test mimetype parsing
 if __name__ == '__main__':
     m = MediaType('application/rdf+xml ;charset=ISO-5591-1   ;foo=bar ')
-    print m.mimeType()
-    print m.params['charset']
-    print m.params['foo']
+    print(m.mimeType())
+    print(m.params['charset'])
+    print(m.params['foo'])
     m = MediaType('image/vnd.microsoft.icon')
-    print m.mimeType()
+    print(m.mimeType())
