@@ -3,7 +3,6 @@ import logging
 import dpkt
 
 from pcaputil import *
-import tcp
 from packetdispatcher import PacketDispatcher
 
 
@@ -31,7 +30,7 @@ def ParsePcap(dispatcher, filename=None, reader=None):
     elif reader:
         pcap = reader
     else:
-        raise 'function ParsePcap needs either a filename or pcap reader'
+        raise RuntimeError('function ParsePcap needs either a filename or pcap reader')
     # now we have the reader; read from it
     packet_count = 1  # start from 1 like Wireshark
     errors = [] # store errors for later inspection

@@ -80,4 +80,5 @@ class FlowBuilder(object):
                 yield flow
 
     def finish(self):
-        map(tcp.Flow.finish, self.flows())
+        for flow in self.flows():
+            tcp.Flow.finish(flow)
