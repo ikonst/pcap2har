@@ -1,7 +1,7 @@
 import urllib.parse
 
 # dpkt.http is buggy, so we use our modified replacement
-from .. import dpkt_http_replacement as dpkt_http
+import dpkt.http
 from . import message as http
 
 
@@ -16,7 +16,7 @@ class Request(http.Message):
     '''
 
     def __init__(self, tcpdir, pointer):
-        http.Message.__init__(self, tcpdir, pointer, dpkt_http.Request)
+        super().__init__(tcpdir, pointer, dpkt.http.Request)
         # get query string. its the URL after the first '?'
         uri = urllib.parse.urlparse(self.msg.uri)
         self.host = self.msg.headers['host'] if 'host' in self.msg.headers else ''

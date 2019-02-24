@@ -1,10 +1,9 @@
 import gzip
 import zlib
 import io
-from base64 import encodestring as b64encode
-import logging
+from base64 import b64encode
 
-from .. import dpkt_http_replacement as dpkt_http
+import dpkt.http
 from ..mediatype import MediaType
 from .. import settings
 
@@ -15,14 +14,10 @@ from . import message
 # starting with system and defaulting to included version
 # otherwise, set the name to None
 try:
-    try:
-        from BeautifulSoup import UnicodeDammit
-    except ImportError:
-        from ..BeautifulSoup import UnicodeDammit
+    from BeautifulSoup import UnicodeDammit
 except ImportError:
     UnicodeDammit = None
-    log.warning('Can\'t find BeautifulSoup, unicode is more likely to be '
-                'misinterpreted')
+
 
 class Response(message.Message):
     '''
@@ -41,7 +36,7 @@ class Response(message.Message):
     '''
 
     def __init__(self, tcpdir, pointer):
-        message.Message.__init__(self, tcpdir, pointer, dpkt_http.Response)
+        super().__init__(tcpdir, pointer, dpkt.http.Response)
         # get mime type
         if 'content-type' in self.msg.headers:
             self.mediaType = MediaType(self.msg.headers['content-type'])

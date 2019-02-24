@@ -1,4 +1,3 @@
-from operator import itemgetter, attrgetter
 import logging
 
 from ..sortedcollection import SortedCollection
@@ -6,6 +5,11 @@ from ..sortedcollection import SortedCollection
 from . import packet
 from . import chunk as tcp
 from .. import settings
+
+
+def _none_to_minus_1(v):
+    """Quick hack to revert to Python 2 behavior of comparing ints and Nones"""
+    return v if v is not None else -1
 
 
 class Direction(object):
@@ -34,10 +38,10 @@ class Direction(object):
         '''
         self.finished = False
         self.flow = flow
-        self.arrival_data = SortedCollection(key=itemgetter(0))
-        self.final_arrival_data = SortedCollection(key=itemgetter(0))
+        self.arrival_data = SortedCollection(key=lambda data: _none_to_minus_1(data[0]))
+        self.final_arrival_data = SortedCollection(key=lambda data: _none_to_minus_1(data[0]))
         self.final_arrival_pointer = None
-        self.chunks = SortedCollection(key=attrgetter('seq_start'))
+        self.chunks = SortedCollection(key=lambda chunk: _none_to_minus_1(chunk.seq_start))
         self.final_data_chunk = None
 
     def add(self, pkt):

@@ -48,6 +48,10 @@ class Page(object):
         self.last_entry = entry
         self.referrers.add(entry.request.url)
 
+    def __lt__(self, other):
+        assert type(other) is type(self)
+        return self.startedDateTime < other.startedDateTime
+
     def json_repr(self):
         d = {
             'id': self.pageref,

@@ -44,6 +44,8 @@ def HTTPRequestJsonRepr(self):
         'headers': header_json_repr(self.msg.headers),
         'bodySize': len(self.msg.body),
     }
+
+
 http.Request.json_repr = HTTPRequestJsonRepr
 
 
@@ -56,10 +58,12 @@ def HTTPResponseJsonRepr(self):
         content['compression'] = self.compression_amount
     if self.text:
         if self.encoding:
+            assert type(self.text) is str
             content['text'] = self.text
             content['encoding'] = self.encoding
         else:
-            content['text'] = self.text.encode('utf8')  # must transcode to utf-8
+            assert type(self.text) is str
+            content['text'] = self.text
     return {
         'status': int(self.msg.status),
         'statusText': self.msg.reason,
@@ -71,6 +75,8 @@ def HTTPResponseJsonRepr(self):
         'headers': header_json_repr(self.msg.headers),
         'content': content,
     }
+
+
 http.Response.json_repr = HTTPResponseJsonRepr
 
 
@@ -84,4 +90,5 @@ class JsonReprEncoder(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, 'json_repr'):
             return obj.json_repr()
-        return json.JSONEncoder.default(self, obj) # should call super instead?
+        print(obj)
+        return super().default(obj)
